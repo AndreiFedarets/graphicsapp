@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace GraphicsApp
 {
-    public sealed class ShapeAreaSorter : IShapeHandler
+    public sealed class ShapeAreaSorter : IAreaHandler
     {
         private readonly ListSortDirection _direction;
 

@@ -1,6 +1,4 @@
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using System.Configuration;
 using Unity;
 using Unity.Microsoft.Options;
 
@@ -38,10 +36,9 @@ namespace GraphicsApp.Client.WinForms
                     var providerConfig = new FileShapeProviderConfig();
                     configuration.GetSection(nameof(TextFileTriangleProvider)).Bind(providerConfig);
                     return new AreaBuilder()
-                            .WithTrianglesFromTextFile(providerConfig)
-                            .WithAreaSorter(System.ComponentModel.ListSortDirection.Descending)
-                            .WithColorGenerator(Color.Green);
-                            //.WithShapeIntersectionValidator(container.Resolve<IShapeIntersectionCalculator>());
+                            .TakeTrianglesFromTextFile(providerConfig)
+                            .BuildShapeTree(container.Resolve<IShapeIntersectionCalculator>())
+                            .AssignColorsByLevels(Color.LightGreen);
                 });
 
 

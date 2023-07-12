@@ -11,7 +11,11 @@
 
         public object this[string key]
         {
-            get { return _attributes[key]; }
+            get
+            {
+                _attributes.TryGetValue(key, out object value);
+                return value;
+            }
             set { _attributes[key] = value; }
         }
     }

@@ -1,30 +1,31 @@
-﻿using GraphicsApp.Model;
-using System.Collections;
-using System.Collections.Immutable;
-
-namespace GraphicsApp.Model
+﻿namespace GraphicsApp.Model
 {
-    public class Area : IReadOnlyList<Shape>
+    public class Area : Rectangle
     {
-        private readonly ImmutableList<Shape> _shapes;
-
         public Area(IEnumerable<Shape> shapes)
+            : base(CalculateBottomLeftPoint(shapes), CalculateTopRightPoint(shapes), shapes)
         {
-            _shapes = ImmutableList.CreateRange(shapes);
         }
 
-        public Shape this[int index] => _shapes[index];
-
-        public int Count => _shapes.Count;
-
-        public IEnumerator<Shape> GetEnumerator()
+        public override Shape AssignChildren(IEnumerable<Shape> children)
         {
-            return _shapes.GetEnumerator();
+            return new Area(children);
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        private static Point CalculateBottomLeftPoint(IEnumerable<Shape> children)
         {
-            return GetEnumerator();
+            Rectangle[] bounds = children.Select(x => x.GetBounds()).ToArray();
+            int minX = bounds.Min(x => x.BottomLeft.X);
+            int minY = bounds.Min(x => x.BottomLeft.Y);
+            return new Point(minX, minY);
+        }
+
+        private static Point CalculateTopRightPoint(IEnumerable<Shape> children)
+        {
+            Rectangle[] bounds = children.Select(x => x.GetBounds()).ToArray();
+            int maxX = bounds.Max(x => x.TopRight.X);
+            int maxY = bounds.Max(x => x.TopRight.Y);
+            return new Point(maxX, maxY);
         }
     }
 }

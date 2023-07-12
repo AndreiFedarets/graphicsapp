@@ -7,5 +7,7 @@ namespace GraphicsApp
         bool Supports(Shape shape1, Shape shape2);
 
         bool HaveIntersection(Shape shape1, Shape shape2);
+
+        bool IsIncluded(Shape child, Shape parent);
     }
 }

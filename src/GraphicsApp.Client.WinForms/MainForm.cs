@@ -1,4 +1,4 @@
-using GraphicsApp.Client.WinForms.Container;
+using GraphicsApp.Client.WinForms.Visuals;
 
 namespace GraphicsApp.Client.WinForms
 {
@@ -11,20 +11,22 @@ namespace GraphicsApp.Client.WinForms
         {
             _areaBuilder = areaBuilder;
             var area = Task.Run(async () => await _areaBuilder.BuildAsync()).Result;
-            _container = new AreaVisual(this, area);
+            _container = new AreaVisual(area);
             InitializeComponent();
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            _container.Draw();
+            using var graphics = CreateGraphics();
+            _container.Draw(graphics);
         }
 
         protected override void OnResizeEnd(EventArgs e)
         {
             base.OnResizeEnd(e);
-            _container.Draw();
+            using var graphics = CreateGraphics();
+            _container.Draw(graphics);
         }
     }
 }

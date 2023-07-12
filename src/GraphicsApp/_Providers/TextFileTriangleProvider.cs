@@ -30,7 +30,7 @@ namespace GraphicsApp
                 throw new FileNotFoundException($"Source file was not found by the path {_config.FilePath}", _config.FilePath);
             }
 
-            using StreamReader reader = new StreamReader(_config.FilePath);
+            using var reader = new StreamReader(_config.FilePath);
 
             var lineData = await reader.ReadIntLineAsync();
             if (lineData.Length != 1)
@@ -44,10 +44,10 @@ namespace GraphicsApp
                 throw new Exception($"Lines count must be greater than 0 and less or equal to {_config.ShapesLimit}");
             }
 
-            Shape[] shapes = new Shape[linesCount];
+            var shapes = new Shape[linesCount];
             for (int i = 0; i < linesCount; i++)
             {
-                int[] coordinates = await reader.ReadIntLineAsync().ConfigureAwait(false);
+                var coordinates = await reader.ReadIntLineAsync().ConfigureAwait(false);
                 if (coordinates.Length == 0)
                 {
                     throw new Exception("Unexpected end of the input data");
@@ -58,11 +58,14 @@ namespace GraphicsApp
                     throw new Exception("Coordinates line must contain 6 numbers");
                 }
 
-                Point p1 = new Point(coordinates[0], coordinates[1]);
-                Point p2 = new Point(coordinates[2], coordinates[3]);
-                Point p3 = new Point(coordinates[4], coordinates[5]);
+                var p1 = new Point(coordinates[0], coordinates[1]);
+                var p2 = new Point(coordinates[2], coordinates[3]);
+                var p3 = new Point(coordinates[4], coordinates[5]);
 
-                shapes[i] = new Triangle(p1, p2, p3);
+                shapes[i] = new Triangle(p1, p2, p3)
+                {
+                    Tag = i.ToString()
+                };
             }
 
             return shapes;

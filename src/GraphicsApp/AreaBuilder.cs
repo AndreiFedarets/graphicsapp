@@ -4,15 +4,15 @@ namespace GraphicsApp
 {
     public class AreaBuilder
     {
-        private List<IShapeHandler> _handlers;
+        private List<IAreaHandler> _handlers;
         private IShapeProvider _provider;
 
         public AreaBuilder()
         {
-            _handlers = new List<IShapeHandler>();
+            _handlers = new List<IAreaHandler>();
         }
 
-        public AreaBuilder WithHandler(IShapeHandler handler)
+        public AreaBuilder WithHandler(IAreaHandler handler)
         {
             _handlers.Add(handler);
             return this;
@@ -28,12 +28,13 @@ namespace GraphicsApp
         {
             var shapes = (await _provider.GetShapesAsync()).ToArray();
 
+            var area = new Area(shapes);
             foreach (var handler in _handlers)
             {
-                shapes = handler.Handle(shapes);
+                area = handler.Handle(area);
             }
 
-            return new Area(shapes);
+            return area;
         }
     }
 }

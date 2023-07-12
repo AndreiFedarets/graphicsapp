@@ -2,7 +2,7 @@
 {
     public static class AreaBuilderExtensions
     {
-        public static AreaBuilder WithColorGenerator(this AreaBuilder builder, Color baseColor)
+        public static AreaBuilder AssignColorsByLevels(this AreaBuilder builder, Color baseColor)
         {
             builder.WithHandler(new ShapeColorGenerator(baseColor));
             return builder;

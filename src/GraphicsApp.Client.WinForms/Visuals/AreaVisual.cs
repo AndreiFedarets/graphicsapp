@@ -1,35 +1,26 @@
-﻿using GraphicsApp.Model;
-using System.Collections.Immutable;
-
-namespace GraphicsApp.Client.WinForms.Visuals
+﻿namespace GraphicsApp.Client.WinForms.Visuals
 {
-    public class AreaVisual
+    public class AreaVisual : RectangleVilsual
     {
-        private readonly Control _control;
-        private readonly ImmutableList<ShapeVisual> _containers;
-
-        public AreaVisual(Control control, Area area)
+        public AreaVisual(Model.Area area)
+            : base(area)
         {
-            _control = control;
-            _containers = area.Select(x => CreateContainer(x)).ToImmutableList();
         }
 
-        public void Draw()
+        public void Draw(Graphics graphics)
         {
-            using var graphics = _control.CreateGraphics();
-            graphics.Clear(Color.LightGray);
-            _containers.ForEach(x => x.Draw(graphics));
+            graphics.Clear(SystemColors.Control);
+            var bounds = Shape.GetBounds();
+            var visualBounds = graphics.VisibleClipBounds;
+            var scaleFactor = CalculateScaleFactor(bounds, visualBounds);
+            Draw(graphics, bounds, scaleFactor);
         }
 
-        private ShapeVisual CreateContainer(Shape shape)
+        private double CalculateScaleFactor(Model.Rectangle bounds, RectangleF visualBounds)
         {
-            if (shape is Triangle triangle)
-            {
-                return new TriangleVisual(triangle);
-            }
-
-            throw new NotSupportedException($"Shape of the type {shape.GetType().FullName} is not supported");
+            double heightScaleFactor = visualBounds.Height / bounds.Height;
+            double widthScaleFactor = visualBounds.Width / bounds.Width;
+            return Math.Min(heightScaleFactor, widthScaleFactor);
         }
-
     }
 }

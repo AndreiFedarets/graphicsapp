@@ -2,7 +2,7 @@
 
 namespace GraphicsApp
 {
-    public sealed class ShapeIntersectionValidator : IShapeHandler
+    public sealed class ShapeIntersectionValidator : IAreaHandler
     {
         private readonly IShapeIntersectionCalculator _intersectionCalculator;
 
