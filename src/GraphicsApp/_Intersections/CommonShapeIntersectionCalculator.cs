@@ -3,6 +3,9 @@ using System.Collections.Immutable;
 
 namespace GraphicsApp
 {
+    /// <summary>
+    /// Represents common calculator united all available specific calculators
+    /// </summary>
     public sealed class CommonShapeIntersectionCalculator : IShapeIntersectionCalculator
     {
         private ImmutableList<IShapeIntersectionCalculator> _calculators;
@@ -12,18 +15,21 @@ namespace GraphicsApp
             _calculators = ImmutableList.CreateRange(calculators);
         }
 
+        /// <inheritdoc/>
         public bool HaveIntersection(Shape shape1, Shape shape2)
         {
             var calculator = GetCalculator(shape1, shape2);
             return calculator.HaveIntersection(shape1, shape2);
         }
 
+        /// <inheritdoc/>
         public bool IsIncluded(Shape child, Shape parent)
         {
             var calculator = GetCalculator(child, parent);
             return calculator.IsIncluded(child, parent);
         }
 
+        /// <inheritdoc/>
         public bool Supports(Shape shape1, Shape shape2)
         {
             return _calculators.Find(validator => validator.Supports(shape1, shape2)) != null;

@@ -2,10 +2,19 @@
 
 namespace GraphicsApp
 {
+    /// <summary>
+    /// Provide triangles from text file
+    /// </summary>
     public sealed class TextFileTriangleProvider : IShapeProvider
     {
         private readonly FileShapeProviderConfig _config;
 
+        /// <summary>
+        /// Create new instance of TextFileTriangleProvider
+        /// </summary>
+        /// <param name="config"></param>
+        /// <exception cref="ArgumentNullException">config is null</exception>
+        /// <exception cref="ArgumentException">config.FilePath is null or empty or config.ShapesLimit is less or equal 0</exception>
         public TextFileTriangleProvider(FileShapeProviderConfig config)
         {
             if (config == null)
@@ -14,7 +23,7 @@ namespace GraphicsApp
             }
             if (string.IsNullOrEmpty(config.FilePath))
             {
-                throw new ArgumentNullException(nameof(config.FilePath));
+                throw new ArgumentException("Value cannot be null or empty", nameof(config.FilePath));
             }
             if (config.ShapesLimit <= 0)
             {
@@ -23,6 +32,12 @@ namespace GraphicsApp
             _config = config;
         }
 
+        /// <summary>
+        /// Read triangles from the specified text file
+        /// </summary>
+        /// <returns>Collection of triangles</returns>
+        /// <exception cref="FileNotFoundException">Source file does not exist</exception>
+        /// <exception cref="InvalidSourceException">Source file has invalid format, data or contains more triangles than specified limit</exception>
         public async Task<IEnumerable<Shape>> GetShapesAsync()
         {
             if (!File.Exists(_config.FilePath))
@@ -32,16 +47,16 @@ namespace GraphicsApp
 
             using var reader = new StreamReader(_config.FilePath);
 
-            var lineData = await reader.ReadIntLineAsync();
+            var lineData = await reader.ReadIntLineAsync().ConfigureAwait(false);
             if (lineData.Length != 1)
             {
-                throw new Exception("First line (shapes count) must contain single integer");
+                throw new InvalidSourceException("First line (shapes count) must contain single integer");
             }
 
             int linesCount = lineData[0];
             if (linesCount <= 0 || linesCount > _config.ShapesLimit)
             {
-                throw new Exception($"Lines count must be greater than 0 and less or equal to {_config.ShapesLimit}");
+                throw new InvalidSourceException($"Lines count must be greater than 0 and less or equal to {_config.ShapesLimit}");
             }
 
             var shapes = new Shape[linesCount];
@@ -50,12 +65,12 @@ namespace GraphicsApp
                 var coordinates = await reader.ReadIntLineAsync().ConfigureAwait(false);
                 if (coordinates.Length == 0)
                 {
-                    throw new Exception("Unexpected end of the input data");
+                    throw new InvalidSourceException("Unexpected end of the input data");
                 }
 
                 if (coordinates.Length != 6)
                 {
-                    throw new Exception("Coordinates line must contain 6 numbers");
+                    throw new InvalidSourceException("Coordinates line must contain 6 numbers");
                 }
 
                 var p1 = new Point(coordinates[0], coordinates[1]);

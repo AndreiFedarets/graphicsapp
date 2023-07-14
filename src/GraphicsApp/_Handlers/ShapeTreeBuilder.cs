@@ -2,6 +2,9 @@
 
 namespace GraphicsApp
 {
+    /// <summary>
+    /// Represents handler which build tree of Shapes into Area
+    /// </summary>
     public sealed class ShapeTreeBuilder : IAreaHandler
     {
         private readonly IShapeIntersectionCalculator _intersectionCalculator;

@@ -25,11 +25,23 @@ namespace GraphicsApp.Client.WinForms
             IUnityContainer container = new UnityContainer()
                 .RegisterInstance(configuration)
                 .AddExtension(new OptionsExtension())
+                .RegisterFactory<IBaseColorProvider>(container =>
+                {
+                    var provider = new BaseColorProvider(Color.LightGreen);
+                    provider.BaseColorChanged += (sender, args) =>
+                    {
+                        var areaBuilder = container.Resolve<AreaBuilder>();
+                        areaBuilder.HasChanges = true;
+                    };
+
+                    return provider;
+                }, FactoryLifetime.Singleton)
                 .RegisterFactory<IShapeIntersectionCalculator>(container =>
                 {
-                    return new ShapeIntersectionCalculatorBuilder()
-                                .Add<TriangleIntersectionCalculator>()
-                                .Build();
+                    return new CommonShapeIntersectionCalculator(new[]
+                    {
+                        container.Resolve<TriangleIntersectionCalculator>()
+                    });
                 }, FactoryLifetime.Singleton)
                 .RegisterFactory<AreaBuilder>(container =>
                 {
@@ -38,8 +50,10 @@ namespace GraphicsApp.Client.WinForms
                     return new AreaBuilder()
                             .TakeTrianglesFromTextFile(providerConfig)
                             .BuildShapeTree(container.Resolve<IShapeIntersectionCalculator>())
-                            .AssignColorsByLevels(Color.LightGreen);
-                });
+                            .AssignColorsByLevels(container.Resolve<IBaseColorProvider>())
+                            .AppendShadeCountStatus()
+                            .WithErrorOnFailure(container.Resolve<IBaseColorProvider>());
+                }, FactoryLifetime.Singleton);
 
 
             return container;

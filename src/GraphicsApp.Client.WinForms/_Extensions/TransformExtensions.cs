@@ -10,5 +10,15 @@
             double y = (bounds.TopRight.Y - point.Y) * scaleFactor;
             return new Point((int)x, (int)y);
         }
+
+        public static RectangleF ToDrawingRectangle(this Model.Rectangle rectange, Model.Rectangle bounds, double scaleFactor = 1)
+        {
+            var point = new Model.Point(rectange.BottomLeft.X, rectange.TopRight.Y).ToDrawingPoint(bounds, scaleFactor);
+            
+            float width = rectange.Width * (float)scaleFactor;
+            float height = rectange.Height * (float)scaleFactor;
+
+            return new RectangleF(point.X, point.Y, width, height);
+        }
     }
 }

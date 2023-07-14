@@ -2,6 +2,8 @@
 {
     public readonly struct Point
     {
+        public static readonly Point Zero = new Point(0, 0);
+
         private readonly int _x;
         private readonly int _y;
 

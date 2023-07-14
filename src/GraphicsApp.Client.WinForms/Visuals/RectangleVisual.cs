@@ -1,8 +1,8 @@
 ﻿namespace GraphicsApp.Client.WinForms.Visuals
 {
-    public class RectangleVilsual : ShapeVisual
+    public class RectangleVisual : ShapeVisual
     {
-        public RectangleVilsual(Model.Rectangle rectangle)
+        public RectangleVisual(Model.Rectangle rectangle)
             : base(rectangle)
         {
         }

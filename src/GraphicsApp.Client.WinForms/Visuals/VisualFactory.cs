@@ -16,6 +16,11 @@ namespace GraphicsApp.Client.WinForms.Visuals
                 return new AreaVisual(area);
             }
 
+            if (shape is Text text)
+            {
+                return new TextVisual(text);
+            }
+
             throw new NotSupportedException($"Shape of the type {shape.GetType().FullName} is not supported");
         }
     }

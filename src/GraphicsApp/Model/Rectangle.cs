@@ -2,26 +2,25 @@
 {
     public class Rectangle : Shape
     {
-        public Rectangle(Point p1, Point p2, IEnumerable<Shape> children = null)
-            : base(children)
+        public Rectangle(Point p1, Point p2)
+            : base()
         {
             // check that points are correct and were passed
             // in the correct order, if not - correct them
-            if (p1.X < p2.X && p1.Y < p2.Y)
-            {
-                BottomLeft = p1;
-                TopRight = p2;
-            }
-            else
-            {
-                int minX = Math.Min(p1.X, p2.X);
-                int minY = Math.Min(p1.Y, p2.Y);
-                BottomLeft = new Point(minX, minY);
+            int minX = Math.Min(p1.X, p2.X);
+            int minY = Math.Min(p1.Y, p2.Y);
+            BottomLeft = new Point(minX, minY);
 
-                int maxX = Math.Max(p1.X, p2.X);
-                int maxY = Math.Max(p1.Y, p2.Y);
-                TopRight = new Point(maxX, maxY);
-            }
+            int maxX = Math.Max(p1.X, p2.X);
+            int maxY = Math.Max(p1.Y, p2.Y);
+            TopRight = new Point(maxX, maxY);
+        }
+
+        public Rectangle(Rectangle rectangle, IEnumerable<Shape> children, AttributeCollection attributes)
+            : base(children, attributes)
+        {
+            BottomLeft = rectangle.BottomLeft;
+            TopRight = rectangle.TopRight;
         }
 
         public Point BottomLeft { get; }
@@ -54,14 +53,6 @@
         public override Rectangle GetBounds()
         {
             return this;
-        }
-
-        public override Shape AssignChildren(IEnumerable<Shape> children)
-        {
-            return new Rectangle(BottomLeft, TopRight, children)
-            {
-                Tag = Tag
-            };
         }
     }
 }

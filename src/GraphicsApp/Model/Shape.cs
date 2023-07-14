@@ -4,14 +4,20 @@ namespace GraphicsApp.Model
 {
     public abstract class Shape
     {
-        public Shape(IEnumerable<Shape> children = null)
+        public Shape()
+            : this(Enumerable.Empty<Shape>(), new AttributeCollection())
         {
-            Children = ImmutableList.CreateRange(children ?? Enumerable.Empty<Shape>());
+        }
+
+        public Shape(IEnumerable<Shape> children, AttributeCollection attributes)
+        {
+            Children = ImmutableList.CreateRange(children);
+            Attributes = attributes;
         }
 
         public string Tag { get; set; }
 
-        public AttributeCollection Attributes { get; } = new AttributeCollection();
+        public AttributeCollection Attributes { get; }
 
         public ImmutableList<Shape> Children { get; }
 
@@ -20,7 +26,5 @@ namespace GraphicsApp.Model
         public abstract double GetArea();
 
         public abstract Rectangle GetBounds();
-
-        public abstract Shape AssignChildren(IEnumerable<Shape> children);
     }
 }

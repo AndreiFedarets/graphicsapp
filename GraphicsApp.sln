@@ -5,9 +5,15 @@ VisualStudioVersion = 17.6.33712.159
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphicsApp.Client.WinForms", "src\GraphicsApp.Client.WinForms\GraphicsApp.Client.WinForms.csproj", "{AC1269DE-EECB-4AF9-8CED-84DD3FFABD00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphicsApp", "src\GraphicsApp\GraphicsApp.csproj", "{6E120018-6FD7-419A-BD58-993708059737}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphicsApp", "src\GraphicsApp\GraphicsApp.csproj", "{6E120018-6FD7-419A-BD58-993708059737}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7FAECA03-B954-4F52-98C2-6348C1A387E1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{57BE81D9-5681-41E6-A3E8-7BB9F685A67C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphicsApp.Tests.Unit", "tests\GraphicsApp.Tests.Unit\GraphicsApp.Tests.Unit.csproj", "{E9BF397B-D402-427E-9198-D613F63C2AD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphicsApp.Client.WinForms.Tests.Unit", "tests\GraphicsApp.Client.WinForms.Tests.Unit\GraphicsApp.Client.WinForms.Tests.Unit.csproj", "{E3C46D36-68AF-4634-A7FA-BDB8835B1B2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +29,14 @@ Global
 		{6E120018-6FD7-419A-BD58-993708059737}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E120018-6FD7-419A-BD58-993708059737}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E120018-6FD7-419A-BD58-993708059737}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9BF397B-D402-427E-9198-D613F63C2AD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9BF397B-D402-427E-9198-D613F63C2AD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9BF397B-D402-427E-9198-D613F63C2AD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9BF397B-D402-427E-9198-D613F63C2AD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3C46D36-68AF-4634-A7FA-BDB8835B1B2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3C46D36-68AF-4634-A7FA-BDB8835B1B2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3C46D36-68AF-4634-A7FA-BDB8835B1B2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3C46D36-68AF-4634-A7FA-BDB8835B1B2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,6 +44,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{AC1269DE-EECB-4AF9-8CED-84DD3FFABD00} = {7FAECA03-B954-4F52-98C2-6348C1A387E1}
 		{6E120018-6FD7-419A-BD58-993708059737} = {7FAECA03-B954-4F52-98C2-6348C1A387E1}
+		{E9BF397B-D402-427E-9198-D613F63C2AD9} = {57BE81D9-5681-41E6-A3E8-7BB9F685A67C}
+		{E3C46D36-68AF-4634-A7FA-BDB8835B1B2D} = {57BE81D9-5681-41E6-A3E8-7BB9F685A67C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {96648023-ECE1-4D9C-8020-64750932FD21}

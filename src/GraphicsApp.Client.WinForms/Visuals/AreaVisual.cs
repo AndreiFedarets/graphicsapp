@@ -1,10 +1,15 @@
 ﻿namespace GraphicsApp.Client.WinForms.Visuals
 {
-    public class AreaVisual : RectangleVilsual
+    public class AreaVisual : RectangleVisual
     {
         public AreaVisual(Model.Area area)
             : base(area)
         {
+        }
+
+        public new Model.Area Shape
+        {
+            get { return (Model.Area)base.Shape; }
         }
 
         public void Draw(Graphics graphics)
