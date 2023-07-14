@@ -23,10 +23,32 @@ namespace GraphicsApp.Client.WinForms.Tests.Unit
                 parent1, parent2
             });
 
-            var generator = new ErrorCaptionGenerator(colorProvider.Object);
+            var generator = new ShapeColorGenerator(colorProvider.Object);
             var result = generator.Handle(area);
 
-            Assert.Equal(baseColor, result.Attributes[nameof(Color)]);
+            // are color is base color
+            AssertColorsEqual(baseColor, (Color)result.Attributes[nameof(Color)]);
+
+            // level 1 shape color is darker than base color
+            AssertColorIsDarkerThanBaseColor(baseColor, (Color)result.Children[0].Attributes[nameof(Color)]);
+            AssertColorIsDarkerThanBaseColor(baseColor, (Color)result.Children[1].Attributes[nameof(Color)]);
+
+            // level 1 shapes have the same color
+            AssertColorsEqual((Color)result.Children[0].Attributes[nameof(Color)], (Color)result.Children[1].Attributes[nameof(Color)]);
+
+            // level 2 shape color is darker than level 1 shape color
+            AssertColorIsDarkerThanBaseColor((Color)result.Children[0].Attributes[nameof(Color)], (Color)result.Children[0].Children[0].Attributes[nameof(Color)]);
+        }
+
+        private void AssertColorIsDarkerThanBaseColor(Color baseColor, Color color)
+        {
+            Assert.True(color.R <= baseColor.R && color.G <= baseColor.G && color.B <= baseColor.B);
+            Assert.True(color.R < baseColor.R || color.G < baseColor.G || color.B < baseColor.B);
+        }
+
+        private void AssertColorsEqual(Color color1, Color color2)
+        {
+            Assert.Equal(color1.ToArgb(), color2.ToArgb());
         }
     }
 }
