@@ -46,8 +46,16 @@ namespace GraphicsApp
             }
 
             using var reader = new StreamReader(_config.FilePath);
+            int[] lineData;
+            try
+            {
+                lineData = await reader.ReadIntLineAsync().ConfigureAwait(false);
+            }
+            catch (Exception exception)
+            {
+                throw new InvalidSourceException("Error reading shapes count line", exception);
+            }
 
-            var lineData = await reader.ReadIntLineAsync().ConfigureAwait(false);
             if (lineData.Length != 1)
             {
                 throw new InvalidSourceException("First line (shapes count) must contain single integer");
@@ -62,15 +70,24 @@ namespace GraphicsApp
             var shapes = new Shape[linesCount];
             for (int i = 0; i < linesCount; i++)
             {
-                var coordinates = await reader.ReadIntLineAsync().ConfigureAwait(false);
+                int[] coordinates;
+                try
+                {
+                    coordinates = await reader.ReadIntLineAsync().ConfigureAwait(false);
+                }
+                catch (Exception exception)
+                {
+                    throw new InvalidSourceException($"Error reading coordinates line {i}", exception);
+                }
+                
                 if (coordinates.Length == 0)
                 {
-                    throw new InvalidSourceException("Unexpected end of the input data");
+                    throw new InvalidSourceException($"Unexpected end of the input data in coordinates line {i}");
                 }
 
                 if (coordinates.Length != 6)
                 {
-                    throw new InvalidSourceException("Coordinates line must contain 6 numbers");
+                    throw new InvalidSourceException($"Coordinates line must contain 6 numbers in line {i}");
                 }
 
                 var p1 = new Point(coordinates[0], coordinates[1]);

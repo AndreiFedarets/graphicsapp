@@ -139,15 +139,15 @@ namespace GraphicsApp.Tests.Unit
             Assert.True(shape2 is Triangle);
 
             var triangle1 = (Triangle)shape1;
-            Assert.Equal(new Model.Point(0, 0), triangle1.P1);
-            Assert.Equal(new Model.Point(10, 10), triangle1.P2);
-            Assert.Equal(new Model.Point(20, 20), triangle1.P3);
+            Assert.Equal(new GraphicsApp.Model.Point(0, 0), triangle1.P1);
+            Assert.Equal(new GraphicsApp.Model.Point(10, 10), triangle1.P2);
+            Assert.Equal(new GraphicsApp.Model.Point(20, 20), triangle1.P3);
 
 
             var triangle2 = (Triangle)shape2;
-            Assert.Equal(new Model.Point(1, 1), triangle2.P1);
-            Assert.Equal(new Model.Point(11, 11), triangle2.P2);
-            Assert.Equal(new Model.Point(22, 22), triangle2.P3);
+            Assert.Equal(new GraphicsApp.Model.Point(1, 1), triangle2.P1);
+            Assert.Equal(new GraphicsApp.Model.Point(11, 11), triangle2.P2);
+            Assert.Equal(new GraphicsApp.Model.Point(22, 22), triangle2.P3);
 
         }
     }

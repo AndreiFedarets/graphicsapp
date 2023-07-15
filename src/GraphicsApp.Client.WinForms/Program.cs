@@ -19,7 +19,7 @@ namespace GraphicsApp.Client.WinForms
             Application.Run(container.Resolve<MainForm>());
         }
 
-        static IUnityContainer BuildContainer()
+        public static IUnityContainer BuildContainer()
         {
             IConfiguration configuration = BuildConfiguration();
             IUnityContainer container = new UnityContainer()
