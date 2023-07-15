@@ -52,80 +52,85 @@ namespace GraphicsApp.Tests.Unit
         }
 
         [Fact]
-        public void GetShapesAsync_ThrowsFileNotFoundException_WhenFileDoesNotExists()
+        public async Task GetShapesAsync_ThrowsFileNotFoundException_WhenFileDoesNotExists()
         {
             var provider = new TextFileTriangleProvider(new FileShapeProviderConfig()
             {
                 FilePath = "Resources/TextFileTriangleProviderTests/data_NN.txt",
                 ShapesLimit = 10
             });
-            Assert.ThrowsAsync<FileNotFoundException>(provider.GetShapesAsync);
+            await Assert.ThrowsAsync<FileNotFoundException>(provider.GetShapesAsync);
         }
 
         [Fact]
-        public void GetShapesAsync_ThrowsFileNotFoundException_WhenFileContainsMoreShapesThanLimit()
+        public async Task GetShapesAsync_ThrowsFileNotFoundException_WhenFileContainsMoreShapesThanLimit()
         {
             var provider = new TextFileTriangleProvider(new FileShapeProviderConfig()
             {
                 FilePath = "Resources/TextFileTriangleProviderTests/data_01.txt",
                 ShapesLimit = 1
             });
-            Assert.ThrowsAsync<InvalidSourceException>(provider.GetShapesAsync);
+            await Assert.ThrowsAsync<InvalidSourceException>(provider.GetShapesAsync);
         }
 
         [Fact]
-        public void GetShapesAsync_ThrowsFileNotFoundException_WhenFileContainsLessShapesThanExpected()
+        public async Task GetShapesAsync_ThrowsFileNotFoundException_WhenFileContainsLessShapesThanExpected()
         {
             var provider = new TextFileTriangleProvider(new FileShapeProviderConfig()
             {
                 FilePath = "Resources/TextFileTriangleProviderTests/data_02.txt",
                 ShapesLimit = 10
             });
-            Assert.ThrowsAsync<InvalidSourceException>(provider.GetShapesAsync);
+            await Assert.ThrowsAsync<InvalidSourceException>(provider.GetShapesAsync);
         }
 
         [Fact]
-        public void GetShapesAsync_ThrowsFileNotFoundException_WhenFileContainsInvalidFirsLine()
+        public async Task GetShapesAsync_ThrowsFileNotFoundException_WhenFileContainsInvalidFirsLine()
         {
             var provider = new TextFileTriangleProvider(new FileShapeProviderConfig()
             {
                 FilePath = "Resources/TextFileTriangleProviderTests/data_03.txt",
                 ShapesLimit = 10
             });
-            Assert.ThrowsAsync<InvalidSourceException>(provider.GetShapesAsync);
+            await Assert.ThrowsAsync<InvalidSourceException>(provider.GetShapesAsync);
         }
 
         [Fact]
-        public void GetShapesAsync_ThrowsFileNotFoundException_WhenFileHasMissingFirsLine()
+        public async Task GetShapesAsync_ThrowsFileNotFoundException_WhenFileHasMissingFirsLine()
         {
             var provider = new TextFileTriangleProvider(new FileShapeProviderConfig()
             {
                 FilePath = "Resources/TextFileTriangleProviderTests/data_04.txt",
                 ShapesLimit = 10
             });
-            Assert.ThrowsAsync<InvalidSourceException>(provider.GetShapesAsync);
+            await Assert.ThrowsAsync<InvalidSourceException>(provider.GetShapesAsync);
         }
 
         [Fact]
-        public void GetShapesAsync_ThrowsFileNotFoundException_WhenFileContainsInvalidCoordinatesLine()
+        public async Task GetShapesAsync_ThrowsFileNotFoundException_WhenFileContainsInvalidCoordinatesLine()
         {
             var provider = new TextFileTriangleProvider(new FileShapeProviderConfig()
             {
                 FilePath = "Resources/TextFileTriangleProviderTests/data_05.txt",
                 ShapesLimit = 10
             });
-            Assert.ThrowsAsync<InvalidSourceException>(provider.GetShapesAsync);
+            await Assert.ThrowsAsync<InvalidSourceException>(provider.GetShapesAsync);
         }
 
         [Fact]
         public async Task GetShapesAsync_ReturnsExpectedShapes_WhenFileIsCorrect()
         {
+            // Arrange
             var provider = new TextFileTriangleProvider(new FileShapeProviderConfig()
             {
                 FilePath = "Resources/TextFileTriangleProviderTests/data_01.txt",
                 ShapesLimit = 10
             });
+
+            // Act
             var shapes = await provider.GetShapesAsync();
+
+            // Assert
             Assert.Equal(2, shapes.Count());
 
             var shape1 = shapes.First();

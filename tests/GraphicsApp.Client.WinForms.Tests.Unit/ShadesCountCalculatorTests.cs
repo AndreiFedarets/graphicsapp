@@ -9,6 +9,7 @@ namespace GraphicsApp.Client.WinForms.Tests.Unit
         [Fact]
         public void Handle_CalculatesShadeCount_AndAddsStatusText()
         {
+            // Arrange
             var child1 = new Triangle(new Model.Point(1, 1), new Model.Point(5, 9), new Model.Point(9, 1));
             child1.Attributes[nameof(Color)] = Color.DarkGreen;
 
@@ -26,8 +27,11 @@ namespace GraphicsApp.Client.WinForms.Tests.Unit
             area.Attributes[nameof(Color)] = Color.LightGreen;
 
             var generator = new ShadesCountCalculator();
+
+            // Act
             var result = generator.Handle(area);
 
+            // Assert
             var lastShape = result.Children.Last();
             Assert.True(lastShape is StatusText);
 
@@ -37,6 +41,7 @@ namespace GraphicsApp.Client.WinForms.Tests.Unit
         [Fact]
         public void Handle_SkipsTheSameShades()
         {
+            // Arrange
             var child1 = new Triangle(new Model.Point(1, 1), new Model.Point(5, 9), new Model.Point(9, 1));
             child1.Attributes[nameof(Color)] = Color.DarkGreen;
 
@@ -54,8 +59,11 @@ namespace GraphicsApp.Client.WinForms.Tests.Unit
             area.Attributes[nameof(Color)] = Color.DarkGreen;
 
             var generator = new ShadesCountCalculator();
+
+            // Act
             var result = generator.Handle(area);
 
+            //Assert
             var lastShape = result.Children.Last();
             Assert.True(lastShape is StatusText);
 

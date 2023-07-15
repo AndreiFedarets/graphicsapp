@@ -9,6 +9,7 @@ namespace GraphicsApp.Client.WinForms.Tests.Unit
         [Fact]
         public void Handle_GeneratesShadesByLevels()
         {
+            // Arrange
             Color baseColor = Color.Green;
             Mock<IBaseColorProvider> colorProvider = new Mock<IBaseColorProvider>();
             colorProvider.Setup(x => x.BaseColor).Returns(baseColor);
@@ -24,8 +25,11 @@ namespace GraphicsApp.Client.WinForms.Tests.Unit
             });
 
             var generator = new ShapeColorGenerator(colorProvider.Object);
+
+            // Act
             var result = generator.Handle(area);
 
+            // Assert
             // are color is base color
             AssertColorsEqual(baseColor, (Color)result.Attributes[nameof(Color)]);
 

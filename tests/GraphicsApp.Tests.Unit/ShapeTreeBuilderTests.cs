@@ -24,10 +24,14 @@ namespace GraphicsApp.Tests.Unit
         [Fact]
         public void Handle_BuildsTree_ForParentAndChild()
         {
+            // Arrange
             var builder = new ShapeTreeBuilder(_calculator);
             var input = new Area(new[] { _parentShape1, _childShape1 });
+
+            // Act
             var result = builder.Handle(input);
 
+            // Assert
             Assert.True(result.Children.Count == 1);
             Assert.Equal(_parentShape1.P1, ((Triangle)result.Children[0]).P1);
             Assert.Equal(_parentShape1.P2, ((Triangle)result.Children[0]).P2);
@@ -42,10 +46,14 @@ namespace GraphicsApp.Tests.Unit
         [Fact]
         public void Handle_BuildsTree_ForTwoParents()
         {
+            // Arrange
             var builder = new ShapeTreeBuilder(_calculator);
             var input = new Area(new[] { _parentShape1, _parentShape2 });
+
+            // Act
             var result = builder.Handle(input);
 
+            // Assert
             Assert.True(result.Children.Count == 2);
             Assert.Equal(_parentShape1.P1, ((Triangle)result.Children[0]).P1);
             Assert.Equal(_parentShape1.P2, ((Triangle)result.Children[0]).P2);
@@ -59,9 +67,11 @@ namespace GraphicsApp.Tests.Unit
         [Fact]
         public void Handle_ThrowsException_ForIntersectingTriangles()
         {
+            // Arrange
             var builder = new ShapeTreeBuilder(_calculator);
             var input = new Area(new[] { _parentShape1, _parent1IntersectingShape });
 
+            // Act & Assert
             Assert.Throws<Exception>(() => builder.Handle(input));
         }
     }

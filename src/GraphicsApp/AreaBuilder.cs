@@ -51,6 +51,11 @@ namespace GraphicsApp
             {
                 await _buildSemaphore.WaitAsync().ConfigureAwait(false);
 
+                if (_provider == null)
+                {
+                    throw new InvalidOperationException("Provider is not set");
+                }
+
                 if (!HasChanges && _currentArea != null)
                 {
                     return _currentArea;
