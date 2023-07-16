@@ -1,5 +1,8 @@
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using Unity;
+using Unity.Microsoft.Logging;
 using Unity.Microsoft.Options;
 
 namespace GraphicsApp.Client.WinForms
@@ -22,8 +25,10 @@ namespace GraphicsApp.Client.WinForms
         public static IUnityContainer BuildContainer()
         {
             IConfiguration configuration = BuildConfiguration();
+            ILoggerFactory loggerFactory = new LoggerFactory().AddFile(configuration.GetSection(nameof(Serilog)));
             IUnityContainer container = new UnityContainer()
                 .RegisterInstance(configuration)
+                .AddExtension(new LoggingExtension(loggerFactory))
                 .AddExtension(new OptionsExtension())
                 .RegisterFactory<IBaseColorProvider>(container =>
                 {
@@ -47,7 +52,7 @@ namespace GraphicsApp.Client.WinForms
                 {
                     var providerConfig = new FileShapeProviderConfig();
                     configuration.GetSection(nameof(TextFileTriangleProvider)).Bind(providerConfig);
-                    return new AreaBuilder()
+                    return new AreaBuilder(container.Resolve<ILogger<AreaBuilder>>())
                             .TakeTrianglesFromTextFile(providerConfig)
                             .BuildShapeTree(container.Resolve<IShapeIntersectionCalculator>())
                             .AssignColorsByLevels(container.Resolve<IBaseColorProvider>())

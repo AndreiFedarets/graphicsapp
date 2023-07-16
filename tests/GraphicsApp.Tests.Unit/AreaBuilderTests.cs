@@ -1,4 +1,5 @@
 ﻿using GraphicsApp.Model;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace GraphicsApp.Tests.Unit
@@ -9,7 +10,7 @@ namespace GraphicsApp.Tests.Unit
         public void HasChanges_IsFalse_ForNewBuilder()
         {
             // Arrange
-            var areaBuilder = new AreaBuilder();
+            var areaBuilder = new AreaBuilder(new Mock<ILogger<AreaBuilder>>().Object);
 
             // Act & Assert
             Assert.False(areaBuilder.HasChanges);
@@ -19,7 +20,7 @@ namespace GraphicsApp.Tests.Unit
         public async Task BuildAsync_DoesNotThrowException_WhenProviderIsNotSet()
         {
             // Arrange
-            var areaBuilder = new AreaBuilder();
+            var areaBuilder = new AreaBuilder(new Mock<ILogger<AreaBuilder>>().Object);
 
             // Act & Assert
             await areaBuilder.BuildAsync();
@@ -51,7 +52,7 @@ namespace GraphicsApp.Tests.Unit
                 calledHandlers.Add(handler2.Object);
             }).Returns(() => area);
 
-            var areaBuilder = new AreaBuilder()
+            var areaBuilder = new AreaBuilder(new Mock<ILogger<AreaBuilder>>().Object)
                 .WithProvider(provider.Object)
                 .WithHandler(handler1.Object)
                 .WithHandler(handler2.Object);
@@ -96,7 +97,7 @@ namespace GraphicsApp.Tests.Unit
                 calledFailures.Add(failure2.Object);
             }).Returns(() => area);
 
-            var areaBuilder = new AreaBuilder()
+            var areaBuilder = new AreaBuilder(new Mock<ILogger<AreaBuilder>>().Object)
                 .WithProvider(provider.Object)
                 .WithHandler(handler.Object)
                 .WithFailure(failure1.Object)
@@ -122,7 +123,7 @@ namespace GraphicsApp.Tests.Unit
             Mock<IShapeProvider> provider = new Mock<IShapeProvider>();
             provider.Setup(x => x.GetShapesAsync()).Returns(Task.FromResult((IEnumerable<Shape>)new[] { triangle }));
 
-            var areaBuilder = new AreaBuilder()
+            var areaBuilder = new AreaBuilder(new Mock<ILogger<AreaBuilder>>().Object)
                 .WithProvider(provider.Object);
 
             // Act
@@ -145,7 +146,7 @@ namespace GraphicsApp.Tests.Unit
             Mock<IShapeProvider> provider = new Mock<IShapeProvider>();
             provider.Setup(x => x.GetShapesAsync()).Returns(Task.FromResult((IEnumerable<Shape>)new[] { triangle }));
 
-            var areaBuilder = new AreaBuilder()
+            var areaBuilder = new AreaBuilder(new Mock<ILogger<AreaBuilder>>().Object)
                 .WithProvider(provider.Object);
 
             // Act & Assert
@@ -167,7 +168,7 @@ namespace GraphicsApp.Tests.Unit
 
             Mock<IAreaHandler> handler = new Mock<IAreaHandler>();
 
-            var areaBuilder = new AreaBuilder()
+            var areaBuilder = new AreaBuilder(new Mock<ILogger<AreaBuilder>>().Object)
                 .WithProvider(provider.Object);
 
             // Act & Assert

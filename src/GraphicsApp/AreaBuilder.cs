@@ -1,4 +1,6 @@
 ﻿using GraphicsApp.Model;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace GraphicsApp
 {
@@ -8,13 +10,15 @@ namespace GraphicsApp
     public class AreaBuilder
     {
         private readonly SemaphoreSlim _buildSemaphore;
+        private readonly ILogger<AreaBuilder> _logger;
         private List<IAreaHandler> _handlers;
         private List<IAreaHandler> _failures;
         private IShapeProvider _provider;
         private Area _currentArea;
 
-        public AreaBuilder()
+        public AreaBuilder(ILogger<AreaBuilder> logger)
         {
+            _logger = logger;
             _buildSemaphore = new SemaphoreSlim(1);
             _handlers = new List<IAreaHandler>();
             _failures = new List<IAreaHandler>();
@@ -32,8 +36,16 @@ namespace GraphicsApp
         /// <returns>This instance</returns>
         public AreaBuilder WithHandler(IAreaHandler handler)
         {
-            HasChanges = true;
-            _handlers.Add(handler);
+            try
+            {
+                _buildSemaphore.Wait();
+                _handlers.Add(handler);
+                HasChanges = true;
+            }
+            finally
+            {
+                _buildSemaphore.Release();
+            }
             return this;
         }
 
@@ -44,8 +56,16 @@ namespace GraphicsApp
         /// <returns>This instance</returns>
         public AreaBuilder WithFailure(IAreaHandler handler)
         {
-            HasChanges = true;
-            _failures.Add(handler);
+            try
+            {
+                _buildSemaphore.Wait();
+                _failures.Add(handler);
+                HasChanges = true;
+            }
+            finally
+            {
+                _buildSemaphore.Release();
+            }
             return this;
         }
 
@@ -56,8 +76,16 @@ namespace GraphicsApp
         /// <returns>This instance</returns>
         public AreaBuilder WithProvider(IShapeProvider provider)
         {
-            HasChanges = true;
-            _provider = provider;
+            try
+            {
+                _buildSemaphore.Wait();
+                _provider = provider;
+                HasChanges = true;
+            }
+            finally
+            {
+                _buildSemaphore.Release();
+            }
             return this;
         }
 
@@ -91,9 +119,11 @@ namespace GraphicsApp
 
                 _currentArea = area;
                 HasChanges = false;
+                _logger.LogInformation("Area has been built");
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                _logger.LogError(exception, "Error building area");
                 var area = new Area(Enumerable.Empty<Shape>());
                 foreach (var failure in _failures)
                 {
