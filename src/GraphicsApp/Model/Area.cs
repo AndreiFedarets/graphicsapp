@@ -1,5 +1,8 @@
 ﻿namespace GraphicsApp.Model
 {
+    /// <summary>
+    /// Represents area with shapes
+    /// </summary>
     public class Area : Rectangle
     {
         public Area(Point p1, Point p2)
@@ -12,6 +15,12 @@
         {
         }
 
+        /// <summary>
+        /// Copy constructor
+        /// </summary>
+        /// <param name="area">Sample area</param>
+        /// <param name="children">Children to assign</param>
+        /// <param name="attributes">Attributes to assign</param>
         public Area(Area area, IEnumerable<Shape> children, AttributeCollection attributes)
             : base(area, children, attributes)
         {

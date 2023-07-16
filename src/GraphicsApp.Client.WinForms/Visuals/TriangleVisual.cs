@@ -2,6 +2,9 @@
 
 namespace GraphicsApp.Client.WinForms.Visuals
 {
+    /// <summary>
+    /// Visual representation of triangle
+    /// </summary>
     public class TriangleVisual : ShapeVisual
     {
         public TriangleVisual(Triangle triangle)
@@ -9,11 +12,13 @@ namespace GraphicsApp.Client.WinForms.Visuals
         {
         }
 
+        /// <inheritdoc/>
         public new Triangle Shape
         {
             get { return (Triangle)base.Shape; }
         }
 
+        /// <inheritdoc/>
         protected override void DrawSelf(Graphics graphics, Model.Rectangle bounds, double scaleFactor)
         {
             var color = (Color)Shape.Attributes[nameof(Color)];

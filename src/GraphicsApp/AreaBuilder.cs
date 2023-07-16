@@ -2,6 +2,9 @@
 
 namespace GraphicsApp
 {
+    /// <summary>
+    /// Represents builder of Area
+    /// </summary>
     public class AreaBuilder
     {
         private readonly SemaphoreSlim _buildSemaphore;
@@ -17,8 +20,16 @@ namespace GraphicsApp
             _failures = new List<IAreaHandler>();
         }
 
+        /// <summary>
+        /// Shows if the builder has changes in the flow and Area needs to be built
+        /// </summary>
         public bool HasChanges { get; set; }
 
+        /// <summary>
+        /// Append Area handler to the chain
+        /// </summary>
+        /// <param name="handler">Handler to add</param>
+        /// <returns>This instance</returns>
         public AreaBuilder WithHandler(IAreaHandler handler)
         {
             HasChanges = true;
@@ -26,6 +37,11 @@ namespace GraphicsApp
             return this;
         }
 
+        /// <summary>
+        /// Appends failure handler to the flow (handler will be called in case success flow is failed)
+        /// </summary>
+        /// <param name="handler">Handler to add</param>
+        /// <returns>This instance</returns>
         public AreaBuilder WithFailure(IAreaHandler handler)
         {
             HasChanges = true;
@@ -33,6 +49,11 @@ namespace GraphicsApp
             return this;
         }
 
+        /// <summary>
+        /// Set provider of shapes for Area
+        /// </summary>
+        /// <param name="provider">Provider to set</param>
+        /// <returns>This instance</returns>
         public AreaBuilder WithProvider(IShapeProvider provider)
         {
             HasChanges = true;
@@ -40,11 +61,10 @@ namespace GraphicsApp
             return this;
         }
 
-        public T GetHandler<T>()
-        {
-            return (T)_handlers.FirstOrDefault(x => typeof(T).IsAssignableFrom(x.GetType()));
-        }
-
+        /// <summary>
+        /// Build Area
+        /// </summary>
+        /// <returns>Result area</returns>
         public async Task<Area> BuildAsync()
         {
             try
@@ -71,7 +91,6 @@ namespace GraphicsApp
 
                 _currentArea = area;
                 HasChanges = false;
-
             }
             catch (Exception)
             {

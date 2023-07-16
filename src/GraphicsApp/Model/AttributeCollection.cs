@@ -1,5 +1,8 @@
 ﻿namespace GraphicsApp.Model
 {
+    /// <summary>
+    /// Represents collection of attributes
+    /// </summary>
     public class AttributeCollection
     {
         private readonly Dictionary<string, object> _attributes;
@@ -9,6 +12,11 @@
             _attributes = new Dictionary<string, object>();
         }
 
+        /// <summary>
+        /// Get or set attribute value by key
+        /// </summary>
+        /// <param name="key">Attribute key</param>
+        /// <returns>Attribute value or null if the attribute is missing</returns>
         public object this[string key]
         {
             get

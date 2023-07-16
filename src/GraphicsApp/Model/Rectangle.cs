@@ -1,7 +1,15 @@
 ﻿namespace GraphicsApp.Model
 {
+    /// <summary>
+    /// Represents rectangle shape
+    /// </summary>
     public class Rectangle : Shape
     {
+        /// <summary>
+        /// Create new instance with two diagonal points
+        /// </summary>
+        /// <param name="p1">First point</param>
+        /// <param name="p2">Second point</param>
         public Rectangle(Point p1, Point p2)
             : base()
         {
@@ -16,6 +24,12 @@
             TopRight = new Point(maxX, maxY);
         }
 
+        /// <summary>
+        /// Copy constructor
+        /// </summary>
+        /// <param name="rectangle">Sample rectangle</param>
+        /// <param name="children">Children to assign</param>
+        /// <param name="attributes">Attributes to assign</param>
         public Rectangle(Rectangle rectangle, IEnumerable<Shape> children, AttributeCollection attributes)
             : base(children, attributes)
         {
@@ -37,19 +51,20 @@
             get { return TopRight.X - BottomLeft.X; }
         }
 
+        /// <inheritdoc />
         public override bool ContainsPoint(Point point)
         {
             return point.X >= BottomLeft.X && point.X <= TopRight.X && 
                    point.Y >= BottomLeft.Y && point.Y <= TopRight.Y;
         }
 
+        /// <inheritdoc />
         public override double GetArea()
         {
-            int height = TopRight.Y - BottomLeft.Y;
-            int width = TopRight.X - BottomLeft.X;
-            return height * width;
+            return Height * Width;
         }
 
+        /// <inheritdoc />
         public override Rectangle GetBounds()
         {
             return this;

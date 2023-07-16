@@ -1,5 +1,8 @@
 ﻿namespace GraphicsApp.Client.WinForms.Visuals
 {
+    /// <summary>
+    /// Visual representation of rectangle
+    /// </summary>
     public class RectangleVisual : ShapeVisual
     {
         public RectangleVisual(Model.Rectangle rectangle)
@@ -7,23 +10,19 @@
         {
         }
 
+        /// <inheritdoc/>
         public new Model.Rectangle Shape
         {
             get { return (Model.Rectangle)base.Shape; }
         }
 
+        /// <inheritdoc/>
         protected override void DrawSelf(Graphics graphics, Model.Rectangle bounds, double scaleFactor)
         {
             var color = (Color)Shape.Attributes[nameof(Color)];
             var brush = new SolidBrush(color);
-            var points = new[]
-            {
-                Shape.BottomLeft.ToDrawingPoint(bounds, scaleFactor),
-                new Model.Point(Shape.BottomLeft.X, Shape.TopRight.Y).ToDrawingPoint(bounds, scaleFactor),
-                Shape.TopRight.ToDrawingPoint(bounds, scaleFactor),
-                new Model.Point(Shape.TopRight.X, Shape.BottomLeft.Y).ToDrawingPoint(bounds, scaleFactor),
-            };
-            graphics.FillPolygon(brush, points);
+            var rectangle = Shape.ToDrawingRectangle(bounds);
+            graphics.FillRectangle(brush, rectangle);
         }
     }
 }

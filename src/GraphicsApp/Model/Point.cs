@@ -1,5 +1,8 @@
 ﻿namespace GraphicsApp.Model
 {
+    /// <summary>
+    /// Represents point
+    /// </summary>
     public readonly struct Point
     {
         public static readonly Point Zero = new Point(0, 0);
