@@ -42,24 +42,21 @@
         /// <inheritdoc />
         public override bool ContainsPoint(Point point)
         {
-            // create 3 triangles each of them has one checking point and 2 other points from the current triangle
-            Triangle t1 = new Triangle(point, P1, P2);
-            Triangle t2 = new Triangle(point, P2, P3);
-            Triangle t3 = new Triangle(point, P3, P1);
+            // idea: create 3 triangles each of them has one checking point and 2 other points from the current triangle
 
             // calculate area of the current triangle
             double sampleArea = GetArea();
-            // calculate area of splitted triangles
-            double splitArea = t1.GetArea() + t2.GetArea() + t3.GetArea();
+            // calculate area of 'split' triangles
+            double splitArea = GetArea(point, P1, P2) + GetArea(point, P2, P3) + GetArea(point, P3, P1);
 
-            // if area of split-triangles is the same as area if the current triangle, then the point is located inside
+            // if area of split-triangles is the same as the area of the current triangle, then the point is located inside
             return Math.Abs(splitArea - sampleArea) <= double.Epsilon;
         }
 
         /// <inheritdoc />
         public override double GetArea()
         {
-            return (double)Math.Abs(P1.X * (P2.Y - P3.Y) + P2.X * (P3.Y - P1.Y) + P3.X * (P1.Y - P2.Y)) / 2;
+            return GetArea(P1, P2, P3);
         }
 
         /// <inheritdoc />
@@ -74,6 +71,11 @@
             Point topRight = new Point(maxX, maxY);
 
             return new Rectangle(bottomLeft, topRight);
+        }
+
+        private static double GetArea(Point p1, Point p2, Point p3)
+        {
+            return (double)Math.Abs(p1.X * (p2.Y - p3.Y) + p2.X * (p3.Y - p1.Y) + p3.X * (p1.Y - p2.Y)) / 2;
         }
     }
 }
