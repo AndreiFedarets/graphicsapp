@@ -21,7 +21,7 @@
         {
             var color = (Color)Shape.Attributes[nameof(Color)];
             var brush = new SolidBrush(color);
-            var rectangle = Shape.ToDrawingRectangle(bounds);
+            var rectangle = Shape.ToDrawingRectangle(bounds, scaleFactor);
             graphics.FillRectangle(brush, rectangle);
         }
     }
