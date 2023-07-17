@@ -5,7 +5,7 @@
     /// </summary>
     public class FileShapeProviderConfig
     {
-        public const int DefaultShapesLimit = 100;
+        public const int DefaultShapesLimit = 1000;
 
         /// <summary>
         /// Full path to source file
